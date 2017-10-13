@@ -1,3 +1,3 @@
-window.onload = function(){
-	alert("HELLO WORLD");
-}
+// window.onload = function(){
+// 	alert("HELLO WORLD");
+// }
