@@ -1,2 +1,2 @@
 # quote-book
-Quotes and things
+A place for quotes to live and trive
