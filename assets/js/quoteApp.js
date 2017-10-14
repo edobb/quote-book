@@ -186,6 +186,8 @@ function load() {
     });
 
     //Random Quote generated from API
+    var quoteAuthor;
+    var quoteText;
     $('#random-quote-button').click(function() {
 	  	$.ajax({
 	      url: "https://api.forismatic.com/api/1.0/",
@@ -197,15 +199,29 @@ function load() {
 	        format: "jsonp"
 	      }
 	    }).done(function(response) {
+
 	    	console.log(response);
       	  	console.log(response.quoteAuthor);
       	  	console.log(response.quoteText);
       	  	
       	  	$('#quote').text(response.quoteText);
 	  		$('#author').text(response.quoteAuthor);
-	  	});
+
+		    console.log(response);
+	        quoteAuthor = response.quoteAuthor;
+	        console.log(quoteAuthor);
+	        quoteText = response.quoteText;
+
+	  		});
 
 
 
   	});  
+    $("#save-random-quote").on("click", function(){
+        database.ref("/quotes").push({
+            quoteAuthor: quoteAuthor,
+            quoteText: quoteText
+        });
+       
+    });
 }
