@@ -122,8 +122,10 @@ function load() {
          * - The link to the wikipedia page for this quote.
          */
         createAndDisplayCard: function(quote) {
+            var newRow = document.createElement("div");
+            newRow.className = "row justify-content-center";
             var newCard = document.createElement("div");
-            newCard.className = "card";
+            newCard.className = "card col-sm-7 cardWrapper";
             var cardBody = document.createElement("div");
             cardBody.className = "card-body";
             var quoteText = document.createElement("h4");
@@ -132,11 +134,11 @@ function load() {
             cardBody.appendChild(quoteText);
             var quoteAuthor = document.createElement("p");
             quoteAuthor.className = "card-text";
-            quoteAuthor.innerHTML = quote.author;
+            quoteAuthor.innerHTML = "- " + quote.author;
             cardBody.appendChild(quoteAuthor);
             newCard.appendChild(cardBody);
             var cardFooter = document.createElement("div");
-            cardFooter.className = "card-header";
+            cardFooter.className = "card-header cardFooter";
             var wikiLink = document.createElement("a");
             wikiLink.className = "wikiLink";
             wikiLink.href = quote.wikiLink;
@@ -157,7 +159,8 @@ function load() {
             disLikesSpan.innerHTML = quote.dislikes;
             cardFooter.appendChild(disLikesSpan);
             newCard.appendChild(cardFooter);
-            quoteApp.quoteDisplay.appendChild(newCard);
+            newRow.appendChild(newCard);
+            quoteApp.quoteDisplay.appendChild(newRow);
         }
     };
     /** Temporary self invoking function for displaying the mock database.*/
