@@ -197,7 +197,15 @@ function load() {
 	        format: "jsonp"
 	      }
 	    }).done(function(response) {
-	      console.log(response);
+	    	console.log(response);
+      	  	console.log(response.quoteAuthor);
+      	  	console.log(response.quoteText);
+      	  	
+      	  	$('#quote').text(response.quoteText);
+	  		$('#author').text(response.quoteAuthor);
 	  	});
+
+
+
   	});  
 }
