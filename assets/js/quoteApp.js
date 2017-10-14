@@ -188,6 +188,30 @@ function load() {
     //Random Quote generated from API
     var quoteAuthor;
     var quoteText;
+    	$.ajax({
+	      url: "https://api.forismatic.com/api/1.0/",
+	      jsonp: "jsonp",
+	      dataType: "jsonp",
+	      data: {
+	        method: "getQuote",
+	        lang: "en",
+	        format: "jsonp"
+	      }
+	    }).done(function(response) {
+
+	    	console.log(response);
+      	  	console.log(response.quoteAuthor);
+      	  	console.log(response.quoteText);
+      	  	
+      	  	$('#quote').text(response.quoteText);
+	  		$('#author').text(response.quoteAuthor);
+
+		    console.log(response);
+	        quoteAuthor = response.quoteAuthor;
+	        console.log(quoteAuthor);
+	        quoteText = response.quoteText;
+
+	  		});
     $('#random-quote-button').click(function() {
 	  	$.ajax({
 	      url: "https://api.forismatic.com/api/1.0/",
