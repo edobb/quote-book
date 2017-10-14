@@ -166,4 +166,22 @@ function load() {
             quoteApp.createAndDisplayCard(mockDatabase.quotes[i]);
         }
     })();
+
+    $('#author-input').autocomplete({
+        minLength: 3,
+        delay: 50,
+        appendTo: '#authorSearchContainer',
+        source: function( request, response ) {
+            $.ajax({
+                dataType: "json",
+                type : 'Get',
+                url: 'https://api.datamuse.com/sug?k=demo&s=' + encodeURIComponent(request.term),
+                success: function(data) {
+                    response( $.map( data, function(item) {
+                        return item["word"];
+                    }))
+                },
+            });
+        }
+    });
 }
