@@ -101,12 +101,25 @@ function load() {
     firebase.initializeApp(config);
     /** A handle for the firebase database. */
     var database = firebase.database();
-
     var quoteApp = {
+        /** COLLECTION OF QUOTES PULLEF FROM THE DATABASE */
         /** The div for displaying quote cards. */
         quoteDisplay: document.getElementById('quote-display'),
         /** An array for holding the cards that are in the display. This will can be sorted and used to re display cards in the view. */
         quoteCards: [],
+        pullDatabaseQuotes: function(){
+            database.ref("/quotes").on("value", function(snap) {
+            snap.forEach(function(childSnap) {
+            quoteApp.quoteCards.push(childSnap.val());
+            });
+        });
+        },
+        displayQuotes: function(){
+            console.log(quoteApp.quoteCards[0]);
+            for (var i = 0; i < quoteApp.quoteCards.length; i++) {
+            quoteApp.createAndDisplayCard(quoteApp.quoteCards[i]);
+       }
+        },
         /** Creates card element and adds it to the view.
          * @param {Object} quote
          * @param {string} quote.quote
@@ -178,20 +191,20 @@ function load() {
       	  	$('#quote').text(response.quoteText);
 	  		$('#author').text(response.quoteAuthor);
 
-		    console.log(response);
+		    
 	        quoteAuthor = response.quoteAuthor;
-	        console.log(quoteAuthor);
+	        
 	        quoteText = response.quoteText;
 
 	  		});
         }
     };
     /** Temporary self invoking function for displaying the mock database.*/
-    (function() {
-        for (var i = 0; i < mockDatabase.quotes.length; i++) {
-            quoteApp.createAndDisplayCard(mockDatabase.quotes[i]);
-        }
-    })();
+    // (function() {
+    //     for (var i = 0; i < quoteApp.quoteCards.length; i++) {
+    //         quoteApp.createAndDisplayCard(quoteApp.quoteCards[i]);
+    //     }
+    // })();
 
     $('#author-input').autocomplete({
         minLength: 3,
@@ -215,7 +228,8 @@ function load() {
     var quoteAuthor;
     var quoteText;
     quoteApp.quoteGenerator();
-
+    quoteApp.pullDatabaseQuotes();
+    quoteApp.displayQuotes();
     $('#random-quote-button').click(function() {
 	  	quoteApp.quoteGenerator();
 
@@ -227,5 +241,15 @@ function load() {
             quoteText: quoteText
         });
        
+    });
+    $("#add-quote-btn").on("click", function(event){
+        event.preventDefault();
+        var author = $("#author-input").val().trim();
+        var actualQuote = $("#quote-input").val().trim();
+        console.log(author + " " + actualQuote);
+        database.ref("/quotes").push({
+            quoteAuthor: author,
+            quoteText: actualQuote
+        });
     });
 }
