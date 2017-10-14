@@ -86,6 +86,7 @@ function load() {
          * @param {number} quote.likes
          * @param {number} quote.dislikes
          * @param {string} quote.wikiLink
+         * @return {HTMLDivElement}
          * Data about the quote for creating a card to be displayed to the view.
          * - The actual text content of the quote.
          * - The author of the quote.
