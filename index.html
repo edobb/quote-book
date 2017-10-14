@@ -1,103 +1,84 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>QuoteBook | User-Submitted Quote Database</title>
-  <meta name="author" content="Team Obile">
-  <meta name="description" content="An interactive users submited database of all our favorite quotes for web browsers.">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <script src="https://www.gstatic.com/firebasejs/4.5.1/firebase.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-
-  <link rel="stylesheet" href="assets/css/style.css">
-</head>
-
-<body>
-
-<div class="container">
-
-  <header></header>
-
-  <div class="card" id="featured">
-    <h4 class="card-header">Featured</h4>
-    <div class="card-body">
-      <h4 class="card-title">Special title treatment</h4>
-      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    </div>
-    <a href="">Like</a><span id="totalLikes">0</span> | <a href="">Dislike</a><span id="totalDislikes">0</span>
-  </div>
-
-  <div id="random-quote-wrapper">
-
-    <p id="author"></p>
-
-    <p id="quote"></p>
-
-    <p class="directions">Click below For A Random Quote.</p>
+    <head>
+        <title>QuoteBook | User-Submitted Quote Database</title>
+        <meta name="author" content="Team Obile">
+        <meta name="description" content="An interactive users submited database of all our favorite quotes for web browsers.">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <script src="https://www.gstatic.com/firebasejs/4.5.1/firebase.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+        <link rel="stylesheet" href="assets/css/style.css">
+    </head>
+    <body>
+        <header></header>
+        <div class="container">
+            <div class="card" id="featured">
+                <h4 class="card-header">Featured</h4>
+                <div class="card-body">
+                    <h4 class="card-title">Special title treatment</h4>
+                    <p class="card-text">
+                        With supporting text below as a natural lead-in to additional content.
+                    </p>
+                </div>
+                <a href="">Like</a><span id="totalLikes">0</span> | <a href="">Dislike</a><span id="totalDislikes">0</span>
+            </div>
+            <div id="random-quote-wrapper">
+                <p id="author"></p>
+                <p id="quote"></p>
+                <p class="directions">Click below For A Random Quote.</p>
+                <button id="random-quote-button">Get Random Quote!</button>
+                <button id="save-random-quote">Save Quote</button>
+            </div>
+            <form>
+                <div class="form-group">
+                <label for="author-input">Author Name</label>
+                <input class="form-control" id="author-input" type="text">
+                </div>
+                <div class="form-group">
+                <label for="quote-input">Quote</label>
+                <input class="form-control" id="quote-input" type="text">
+                </div>
     
-    <button id="random-quote-button">Get Random Quote!</button>
-    <button id="save-random-quote">Save Quote</button>
-  
-  </div>
-                  <form>
-                <div class="form-group">
-                  <label for="author-input">Author Name</label>
-                  <input class="form-control" id="author-input" type="text">
-                </div>
-                <div class="form-group">
-                  <label for="quote-input">Quote</label>
-                  <input class="form-control" id="quote-input" type="text">
-                </div>
-       
                 <input class="btn btn-primary" id="add-quote-btn" type="submit">
-              </form>
+            </form>
+        <div id="quote-display">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Special title treatment</h4>
+                    <p class="card-text">
+                        With supporting text below as a natural lead-in to additional content.
+                    </p>
+                </div>
+                <div class="card-header">
+                    <a class="wikiLink" href="#">Wikipedia</a>
+                    <img src="assets/images/icons/thumbsUp.png">
+                    <span>45</span>
+                    <img src="assets/images/icons/thumbsDown.png">
+                    <span>15</span>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.wrapper -->
+    <footer>
+        <p>&copy; 2017 Team Obile</p>
+    </footer>
 
-<div id="quote-display"></div>
-</div><!-- /.wrapper -->
-<footer>
-  <p>&copy; 2017 Team Obile</p>
-</footer>
+
+    <!-- BOOTSTRAP CARD FORMAT
 
 
-<!-- BOOTSTRAP CARD FORMAT
+    <div class="card">
+    
+        <div class="card-body">
+        <h4 class="card-title">Special title treatment</h4>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <h4 class="card-header">Featured</h4>
 
-
-  <div class="card">
-  
-    <div class="card-body">
-      <h4 class="card-title">Special title treatment</h4>
-      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
     </div>
-    <h4 class="card-header">Featured</h4>
-
-  </div>
--->
-
-
-
-
-  <script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyD4l7ohr0vT2IO8HoLQktw68zqTHhkyvck",
-    authDomain: "quote-book-64374.firebaseapp.com",
-    databaseURL: "https://quote-book-64374.firebaseio.com",
-    projectId: "quote-book-64374",
-    storageBucket: "",
-    messagingSenderId: "460460843556"
-  };
-  firebase.initializeApp(config);
-  var database = firebase.database();
-
-</script>
-<script type="text/javascript" src="assets/js/quoteApp.js"></script>
-</body>
+    -->
+    <script type="text/javascript" src="assets/js/quoteApp.js"></script>
+    </body>
 </html>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Document</title>
-</head>
-<body>
