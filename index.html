@@ -16,50 +16,62 @@
     <body>
         <header></header>
         <div class="container">
-            <div class="card" id="featured">
-                <h4 class="card-header">Featured</h4>
-                <div class="card-body">
-                    <h4 class="card-title">Special title treatment</h4>
-                    <p class="card-text">
-                        With supporting text below as a natural lead-in to additional content.
-                    </p>
-                </div>
-                <a href="">Like</a><span id="totalLikes">0</span> | <a href="">Dislike</a><span id="totalDislikes">0</span>
-            </div>
-            <div id="random-quote-wrapper">
-                <p id="author"></p>
-                <p id="quote"></p>
-                <p class="directions">Click below For A Random Quote.</p>
-                <button id="random-quote-button">Get Random Quote!</button>
-                <button id="save-random-quote">Save Quote</button>
-            </div>
-            <form>
-                <div class="form-group">
-                    <label for="author-input">Author Name</label>
-                    <input class="form-control" id="author-input" type="text">
-                    <div id="authorSearchContainer"></div>
-                </div>
-                <div class="form-group">
-                    <label for="quote-input">Quote</label>
-                    <input class="form-control" id="quote-input" type="text">
-                </div>
-                
-                <input class="btn btn-primary" id="add-quote-btn" type="submit">
-            </form>
-            <div id="quote-display">
-                <div class="card">
+            <div class="row justify-content-center">
+                <div class="card col-sm-8 cardWrapper" id="featured">
                     <div class="card-body">
                         <h4 class="card-title">Special title treatment</h4>
                         <p class="card-text">
                             With supporting text below as a natural lead-in to additional content.
                         </p>
                     </div>
-                    <div class="card-header">
+                    <div class="card-header cardFooter">
                         <a class="wikiLink" href="#">Wikipedia</a>
-                        <img src="assets/images/icons/thumbsUp.png">
+                        <img class="thumbsImg" src="assets/images/icons/thumbsUp.png">
                         <span>45</span>
-                        <img src="assets/images/icons/thumbsDown.png">
+                        <img class="thumbsImg" src="assets/images/icons/thumbsDown.png">
                         <span>15</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div id="random-quote-wrapper">
+                    <p id="author"></p>
+                    <p id="quote"></p>
+                    <p class="directions">Click below For A Random Quote.</p>
+                    <button id="random-quote-button">Get Random Quote!</button>
+                    <button id="save-random-quote">Save Quote</button>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <form class="col-sm-8">
+                    <div class="form-group">
+                        <label for="author-input">Author Name</label>
+                        <input class="form-control" id="author-input" type="text">
+                        <div id="authorSearchContainer"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="quote-input">Quote</label>
+                        <input class="form-control" id="quote-input" type="text">
+                    </div>
+                    <input class="btn btn-primary" id="add-quote-btn" type="submit">
+                </form>
+            </div>
+            <div id="quote-display">
+                <div class="row justify-content-center">
+                    <div class="card col-sm-7 cardWrapper">
+                        <div class="card-body">
+                            <h4 class="card-title">Special title treatment</h4>
+                            <p class="card-text">
+                                With supporting text below as a natural lead-in to additional content.
+                            </p>
+                        </div>
+                        <div class="card-header cardFooter">
+                            <a class="wikiLink" href="#">Wikipedia</a>
+                            <img class="thumbsImg" src="assets/images/icons/thumbsUp.png">
+                            <span>45</span>
+                            <img class="thumbsImg" src="assets/images/icons/thumbsDown.png">
+                            <span>15</span>
+                        </div>
                     </div>
                 </div>
             </div>
