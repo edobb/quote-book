@@ -1,94 +1,9 @@
 // Quote Book 2017
 // Team Obile
-if (window.attachEvent) {window.attachEvent('onload', load);}
-else if (window.addEventListener) {window.addEventListener('load', load, false);}
-else {document.addEventListener('load', load, false);}
+if (window.attachEvent) { window.attachEvent('onload', load); }
+else if (window.addEventListener) { window.addEventListener('load', load, false); }
+else { document.addEventListener('load', load, false); }
 function load() {
-    /** This data is here just as filler until there is a working database to pull information from. */
-    var mockDatabase = {
-        quotes: [
-            {
-                quote: 'Using the power of decision gives you the capacity to get past any excuse to change any and every part of your life in an instant.',
-                author: 'Tony Robbins',
-                likes: 45,
-                dislikes: 8,
-                dateAdded: 1507402387185,
-                wikiLink: 'http://www.spacex.com/'
-            },
-            {
-                quote: 'Know that although in the eternal scheme of things you are small, you are also unique and irreplaceable, as are all your fellow humans everywhere in the world.',
-                author: 'Margaret Laurence',
-                likes: 29,
-                dislikes: 9,
-                dateAdded: 1507402387285,
-                wikiLink: 'http://www.spacex.com/'
-            },
-            {
-                quote: 'Learning is a treasure that will follow its owner everywhere',
-                author: 'Chinese Proverb',
-                likes: 299,
-                dislikes: 101,
-                dateAdded: 1507402387284,
-                wikiLink: 'http://www.spacex.com/'
-            },
-            {
-                quote: 'A jug fills drop by drop.',
-                author: 'Buddha',
-                likes: 75,
-                dislikes: 15,
-                dateAdded: 1507402387283,
-                wikiLink: 'http://www.spacex.com/'
-            },
-            {
-                quote: 'Yesterday I dared to struggle. Today I dare to win.',
-                author: 'Bernadette Devlin',
-                likes: 8,
-                dislikes: 64,
-                dateAdded: 1507402387282,
-                wikiLink: 'http://www.spacex.com/'
-            },
-            {
-                quote: 'Fear not for the future, weep not for the past.',
-                author: 'Percy Shelley',
-                likes: 632,
-                dislikes: 215,
-                dateAdded: 1507402387281,
-                wikiLink: 'http://www.spacex.com/'
-            },
-            {
-                quote: 'The happiness that is genuinely satisfying is accompanied by the fullest exercise of our faculties and the fullest realization of the world in which we live.',
-                author: 'Bertrand Russell',
-                likes: 187,
-                dislikes: 285,
-                dateAdded: 1507402387280,
-                wikiLink: 'http://www.spacex.com/'
-            },
-            {
-                quote: 'There is no way to happiness, happiness is the way.',
-                author: 'Thich Nhat Hanh',
-                likes: 86,
-                dislikes: 45,
-                dateAdded: 1507402387280,
-                wikiLink: 'http://www.spacex.com/'
-            },
-            {
-                quote: 'Goals are the fuel in the furnace of achievement.',
-                author: 'Brian Tracy',
-                likes: 212,
-                dislikes: 88,
-                dateAdded: 1507402387280,
-                wikiLink: 'http://www.spacex.com/'
-            },
-            {
-                quote: 'When you have got an elephant by the hind legs and he is trying to run away, it\'s best to let him run.',
-                author: 'Abraham Lincoln',
-                likes: 432,
-                dislikes: 636,
-                dateAdded: 1507402387280,
-                wikiLink: 'http://www.spacex.com/'
-            }
-        ]
-    }
     /** Firebase Initialization Code */
     var config = {
         apiKey: "AIzaSyD4l7ohr0vT2IO8HoLQktw68zqTHhkyvck",
@@ -101,24 +16,26 @@ function load() {
     firebase.initializeApp(config);
     /** A handle for the firebase database. */
     var database = firebase.database();
+    var quoteAuthor;
+    var quoteText;
     var quoteApp = {
-        /** COLLECTION OF QUOTES PULLEF FROM THE DATABASE */
         /** The div for displaying quote cards. */
         quoteDisplay: document.getElementById('quote-display'),
         /** An array for holding the cards that are in the display. This will can be sorted and used to re display cards in the view. */
         quoteCards: [],
-        pullDatabaseQuotes: function(){
-            database.ref("/quotes").on("value", function(snap) {
-            snap.forEach(function(childSnap) {
-            quoteApp.quoteCards.push(childSnap.val());
+        pullDatabaseQuotes: function (callback) {
+            database.ref("/quotes").on("value", function (snap) {
+                snap.forEach(function (childSnap) {
+                    quoteApp.quoteCards.push(childSnap.val());
+                });
+                callback();
             });
-        });
         },
-        displayQuotes: function(){
-            console.log(quoteApp.quoteCards[0]);
+        displayQuotes: function () {
+            console.log(quoteApp.quoteCards.length);
             for (var i = 0; i < quoteApp.quoteCards.length; i++) {
-            quoteApp.createAndDisplayCard(quoteApp.quoteCards[i]);
-       }
+                quoteApp.createAndDisplayCard(quoteApp.quoteCards[i]);
+            }
         },
         /** Creates card element and adds it to the view.
          * @param {Object} quote
@@ -134,7 +51,7 @@ function load() {
          * - The number of dislikes for the quote.
          * - The link to the wikipedia page for this quote.
          */
-        createAndDisplayCard: function(quote) {
+        createAndDisplayCard: function (quote) {
             var newRow = document.createElement("div");
             newRow.className = "row justify-content-center";
             var newCard = document.createElement("div");
@@ -175,48 +92,42 @@ function load() {
             newRow.appendChild(newCard);
             quoteApp.quoteDisplay.appendChild(newRow);
         },
-        quoteGenerator : function(){
-        	$.ajax({
-		      url: "https://api.forismatic.com/api/1.0/",
-		      jsonp: "jsonp",
-		      dataType: "jsonp",
-		      data: {
-		        method: "getQuote",
-		        lang: "en",
-		        format: "jsonp"
-		      }
-	    	}).done(function(response) {
+        quoteGenerator: function () {
+            $.ajax({
+                url: "https://api.forismatic.com/api/1.0/",
+                jsonp: "jsonp",
+                dataType: "jsonp",
+                data: {
+                    method: "getQuote",
+                    lang: "en",
+                    format: "jsonp"
+                }
+            }).done(function (response) {
 
 
-      	  	$('#quote').text(response.quoteText);
-	  		$('#author').text(response.quoteAuthor);
+                $('#quote').text(response.quoteText);
+                $('#author').text(response.quoteAuthor);
 
-		    
-	        quoteAuthor = response.quoteAuthor;
-	        
-	        quoteText = response.quoteText;
 
-	  		});
+                quoteAuthor = response.quoteAuthor;
+
+                quoteText = response.quoteText;
+
+            });
         }
     };
-    /** Temporary self invoking function for displaying the mock database.*/
-    // (function() {
-    //     for (var i = 0; i < quoteApp.quoteCards.length; i++) {
-    //         quoteApp.createAndDisplayCard(quoteApp.quoteCards[i]);
-    //     }
-    // })();
 
     $('#author-input').autocomplete({
         minLength: 3,
         delay: 50,
         appendTo: '#authorSearchContainer',
-        source: function( request, response ) {
+        source: function (request, response) {
             $.ajax({
                 dataType: "json",
-                type : 'Get',
+                type: 'Get',
                 url: 'https://api.datamuse.com/sug?k=demo&s=' + encodeURIComponent(request.term),
-                success: function(data) {
-                    response( $.map( data, function(item) {
+                success: function (data) {
+                    response($.map(data, function (item) {
                         return item["word"];
                     }))
                 },
@@ -225,24 +136,19 @@ function load() {
     });
 
     //Random Quote generated from API
-    var quoteAuthor;
-    var quoteText;
-    quoteApp.quoteGenerator();
-    quoteApp.pullDatabaseQuotes();
-    quoteApp.displayQuotes();
-    $('#random-quote-button').click(function() {
-	  	quoteApp.quoteGenerator();
-
-
-  	});  
-    $("#save-random-quote").on("click", function(){
+    $('#random-quote-button').click(function () {
+        quoteApp.quoteGenerator();
+        
+        
+    });
+    $("#save-random-quote").on("click", function () {
         database.ref("/quotes").push({
             quoteAuthor: quoteAuthor,
             quoteText: quoteText
         });
-       
+        
     });
-    $("#add-quote-btn").on("click", function(event){
+    $("#add-quote-btn").on("click", function (event) {
         event.preventDefault();
         var author = $("#author-input").val().trim();
         var actualQuote = $("#quote-input").val().trim();
@@ -251,5 +157,10 @@ function load() {
             quoteAuthor: author,
             quoteText: actualQuote
         });
+    });
+    // Method calls
+    quoteApp.quoteGenerator();
+    quoteApp.pullDatabaseQuotes(function () {
+        quoteApp.displayQuotes();
     });
 }
