@@ -18,12 +18,20 @@ function load() {
     var database = firebase.database();
     var quoteAuthor;
     var quoteText;
-
+    /**
+     * Constructor for card objects
+     * @param {String} key - The key to this object in the database
+     * @param {Object} data - The data in the database associated with the first parameter key.
+     */
     function Card(key, data) {
         this.key = key;
         this.data = data;
     }
-    
+    /**
+     * Method for adding a card field to the card objects. Contains event listeners for the like and dislike button.
+     * @param {HTMLDivElement} card
+     * The html data for the view of the card.
+     */
     Card.prototype.addCard = function(card) {
         this.card = card;
         var footer = card.getElementsByClassName("cardFooter")[0];
@@ -46,10 +54,9 @@ function load() {
             }
         })
     }
-
-    Card.prototype.getKey = function() {
-        console.log(this.key);
-    }
+    /**
+     * The object that contains the fields and methods for the app.
+     */
     var quoteApp = {
         /** The div for displaying quote cards. */
         quoteDisplay: document.getElementById('quote-display'),
@@ -159,6 +166,10 @@ function load() {
 
             });
         },
+        /**
+         * Increment the likes in the database for the given key.
+         * @param {String} key - The unique key for the quote.
+         */
         addLike: function(key) {
             var newLikes;
             database.ref('/quotes/' + key + '/likes').once("value", function(snap) {
@@ -166,6 +177,10 @@ function load() {
             });
             database.ref('/quotes/' + key + "/likes").set(newLikes);
         },
+        /**
+         * Increment the dislikes in the database for the given key.
+         * @param {String} key - The unique key for the quote.
+         */
         addDislike: function(key) {
             var newDislikes;
             database.ref('/quotes/' + key + '/dislikes').once("value", function(snap) {
@@ -173,6 +188,9 @@ function load() {
             });
             database.ref('/quotes/' + key + "/dislikes").set(newDislikes);
         },
+        /**
+         * Resets the cards view and the arrays associated with the view.
+         */
         clearView: function() {
             quoteApp.cards = [];
             quoteApp.quoteCards = [];
