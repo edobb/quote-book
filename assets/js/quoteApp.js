@@ -18,23 +18,65 @@ function load() {
     var database = firebase.database();
     var quoteAuthor;
     var quoteText;
+
+    function Card(key, data) {
+        this.key = key;
+        this.data = data;
+    }
+    
+    Card.prototype.addCard = function(card) {
+        this.card = card;
+        var footer = card.getElementsByClassName("cardFooter")[0];
+        this.likeButton = footer.children[1];
+        this.dislikeButton = footer.children[3];
+        this.likeButton.addEventListener("click", function(e) {
+            for (var i = 0; i < quoteApp.cards.length; i++) {
+                if (quoteApp.cards[i].card.contains(e.target)) {
+                    quoteApp.addLike(quoteApp.cards[i].key);
+                    break;
+                }
+            }
+        }, false);
+        this.dislikeButton.addEventListener("click", function(e) {
+            for (var i = 0; i < quoteApp.cards.length; i++) {
+                if (quoteApp.cards[i].card.contains(e.target)) {
+                    quoteApp.addDislike(quoteApp.cards[i].key);
+                    break;
+                }
+            }
+        })
+    }
+
+    Card.prototype.getKey = function() {
+        console.log(this.key);
+    }
     var quoteApp = {
         /** The div for displaying quote cards. */
         quoteDisplay: document.getElementById('quote-display'),
         /** An array for holding the cards that are in the display. This will can be sorted and used to re display cards in the view. */
         quoteCards: [],
+        cards: [],
+        /**
+         * Pulls all the quotes from the database and pushes them to the [quoteCards] array.
+         * @param {Function} callback
+         * Callback function for when all quotes have been loaded.
+         */
         pullDatabaseQuotes: function (callback) {
             database.ref("/quotes").on("value", function (snap) {
+                quoteApp.clearView();
                 snap.forEach(function (childSnap) {
+                    quoteApp.cards.push(new Card(childSnap.key, childSnap.val()));
                     quoteApp.quoteCards.push(childSnap.val());
                 });
                 callback();
             });
         },
+        /**
+         * Displays the array of quotes in the [quoteCards] array.
+         */
         displayQuotes: function () {
-            console.log(quoteApp.quoteCards.length);
             for (var i = 0; i < quoteApp.quoteCards.length; i++) {
-                quoteApp.createAndDisplayCard(quoteApp.quoteCards[i]);
+                quoteApp.cards[i].addCard(quoteApp.createAndDisplayCard(quoteApp.quoteCards[i]));
             }
         },
         /** Creates card element and adds it to the view.
@@ -91,6 +133,7 @@ function load() {
             newCard.appendChild(cardFooter);
             newRow.appendChild(newCard);
             quoteApp.quoteDisplay.appendChild(newRow);
+            return newRow;
         },
         quoteGenerator: function () {
             $.ajax({
@@ -114,6 +157,25 @@ function load() {
                 quoteText = response.quoteText;
 
             });
+        },
+        addLike: function(key) {
+            var newLikes;
+            database.ref('/quotes/' + key + '/likes').once("value", function(snap) {
+                newLikes = snap.val() + 1;
+            });
+            database.ref('/quotes/' + key + "/likes").set(newLikes);
+        },
+        addDislike: function(key) {
+            var newDislikes;
+            database.ref('/quotes/' + key + '/dislikes').once("value", function(snap) {
+                newDislikes = snap.val() + 1;
+            });
+            database.ref('/quotes/' + key + "/dislikes").set(newDislikes);
+        },
+        clearView: function() {
+            quoteApp.cards = [];
+            quoteApp.quoteCards = [];
+            quoteApp.quoteDisplay.innerHTML = "";
         }
     };
 
@@ -143,8 +205,11 @@ function load() {
     });
     $("#save-random-quote").on("click", function () {
         database.ref("/quotes").push({
-            quoteAuthor: quoteAuthor,
-            quoteText: quoteText
+            quote: quoteText,
+            author: quoteAuthor,
+            likes: 0,
+            dislikes: 0,
+            wikiLink: 'https://www.google.com'
         });
         
     });
@@ -152,10 +217,12 @@ function load() {
         event.preventDefault();
         var author = $("#author-input").val().trim();
         var actualQuote = $("#quote-input").val().trim();
-        console.log(author + " " + actualQuote);
         database.ref("/quotes").push({
-            quoteAuthor: author,
-            quoteText: actualQuote
+            quote: actualQuote,
+            author: author,
+            likes: 0,
+            dislikes: 0,
+            wikiLink: 'https://www.google.com'
         });
     });
     // Method calls
@@ -163,4 +230,7 @@ function load() {
     quoteApp.pullDatabaseQuotes(function () {
         quoteApp.displayQuotes();
     });
+    document.addEventListener("click", function() {
+        // console.log(quoteApp.cards[3].card);
+    }, false);
 }
