@@ -18,6 +18,7 @@ function load() {
     var database = firebase.database();
     var quoteAuthor;
     var quoteText;
+    var canSave = true;
     /**
      * Constructor for card objects
      * @param {String} key - The key to this object in the database
@@ -195,6 +196,14 @@ function load() {
             quoteApp.cards = [];
             quoteApp.quoteCards = [];
             quoteApp.quoteDisplay.innerHTML = "";
+        },
+        checkIfQuoteIsAlreadyQueried: function(q){
+            for (var i = 0; i < quoteApp.quoteCards.length; i++){
+                if (q.toLowerCase() === quoteApp.quoteCards[i].quote.toLowerCase()){
+                    canSave = false;
+                    console.log("can save value: " + canSave);
+                }
+            }
         }
     };
 
@@ -223,26 +232,35 @@ function load() {
         
     });
     $("#save-random-quote").on("click", function () {
-        database.ref("/quotes").push({
-            quote: quoteText,
-            author: quoteAuthor,
-            likes: 0,
-            dislikes: 0,
-            wikiLink: 'https://www.google.com'
-        });
-        
+        quoteApp.checkIfQuoteIsAlreadyQueried(quoteText);
+        if (canSave){
+            console.log("can save");
+            database.ref("/quotes").push({
+                quote: quoteText,
+                author: quoteAuthor,
+                likes: 0,
+                dislikes: 0,
+                wikiLink: 'https://www.google.com'
+            });
+        }
+        else{
+            console.log("sorry already taken");
+        }
     });
     $("#add-quote-btn").on("click", function (event) {
         event.preventDefault();
         var author = $("#author-input").val().trim();
         var actualQuote = $("#quote-input").val().trim();
-        database.ref("/quotes").push({
-            quote: actualQuote,
-            author: author,
-            likes: 0,
-            dislikes: 0,
-            wikiLink: 'https://www.google.com'
-        });
+        quoteApp.checkIfQuoteIsAlreadyQueried(actualQuote);
+        if (canSave){
+            database.ref("/quotes").push({
+                quote: author,
+                author: actualQuote,
+                likes: 0,
+                dislikes: 0,
+                wikiLink: 'https://www.google.com'
+            });
+        }
     });
     // Method calls
     quoteApp.quoteGenerator();
