@@ -19,6 +19,7 @@ function load() {
     var quoteAuthor;
     var quoteText;
     var canSave = true;
+    var quotesInDatabase =[];
     /**
      * Constructor for card objects
      * @param {String} key - The key to this object in the database
@@ -75,6 +76,7 @@ function load() {
                 snap.forEach(function (childSnap) {
                     quoteApp.cards.push(new Card(childSnap.key, childSnap.val()));
                     quoteApp.quoteCards.push(childSnap.val());
+                    quotesInDatabase.push(childSnap.val().quote);
                 });
                 callback();
             });
@@ -197,13 +199,15 @@ function load() {
             quoteApp.quoteCards = [];
             quoteApp.quoteDisplay.innerHTML = "";
         },
+        //LOOK THROUGH THE DATABASE, IF THE QUOTE IS IN THE DATABASE,
+        //THE QUOTE IS SAVEABLE, 
+        //IF ALREADY IN THE DATABASE, THE QUOTE IS NO LONGER SAVEABLE
         checkIfQuoteIsAlreadyQueried: function(q){
-            for (var i = 0; i < quoteApp.quoteCards.length; i++){
-                if (q.toLowerCase() === quoteApp.quoteCards[i].quote.toLowerCase()){
-                    canSave = false;
-                    console.log("can save value: " + canSave);
+                for (var i = 0; i < quotesInDatabase.length; i++){
+                    if(q.toLowerCase() === quotesInDatabase[i].toLowerCase()){
+                        canSave = false;
+                    }
                 }
-            }
         }
     };
 
@@ -232,8 +236,10 @@ function load() {
         
     });
     $("#save-random-quote").on("click", function () {
+        canSave = true;
         quoteApp.checkIfQuoteIsAlreadyQueried(quoteText);
         if (canSave){
+            quotesInDatabase.push(quoteText);
             console.log("can save");
             database.ref("/quotes").push({
                 quote: quoteText,
@@ -245,14 +251,18 @@ function load() {
         }
         else{
             console.log("sorry already taken");
+
         }
     });
     $("#add-quote-btn").on("click", function (event) {
+        $("#inputError").css("visibility", "hidden");
+        canSave = true;
         event.preventDefault();
         var author = $("#author-input").val().trim();
         var actualQuote = $("#quote-input").val().trim();
         quoteApp.checkIfQuoteIsAlreadyQueried(actualQuote);
         if (canSave){
+            quotesInDatabase.push(actualQuote);
             database.ref("/quotes").push({
                 quote: author,
                 author: actualQuote,
@@ -260,6 +270,10 @@ function load() {
                 dislikes: 0,
                 wikiLink: 'https://www.google.com'
             });
+        }
+        else{
+            console.log("sorry already taken");
+            $("#inputError").css("visibility", "visible");
         }
     });
     // Method calls
