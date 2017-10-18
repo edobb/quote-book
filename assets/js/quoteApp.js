@@ -64,6 +64,7 @@ function load() {
         quoteDisplay: document.getElementById('quote-display'),
         /** An array for holding the cards that are in the display. This will can be sorted and used to re display cards in the view. */
         quoteCards: [],
+        quoteCardElements: [],
         cards: [],
         /**
          * Pulls all the quotes from the database and pushes them to the [quoteCards] array.
@@ -88,6 +89,7 @@ function load() {
             for (var i = 0; i < quoteApp.quoteCards.length; i++) {
                 quoteApp.cards[i].addCard(quoteApp.createAndDisplayCard(quoteApp.quoteCards[i]));
             }
+            quoteApp.quoteCardElements = document.getElementsByClassName("quoteCard");
         },
         /** Creates card element and adds it to the view.
          * @param {Object} quote
@@ -106,7 +108,7 @@ function load() {
          */
         createAndDisplayCard: function (quote) {
             var newRow = document.createElement("div");
-            newRow.className = "row justify-content-center";
+            newRow.className = "row justify-content-center quoteCard";
             var newCard = document.createElement("div");
             newCard.className = "card col-sm-7 cardWrapper";
             var cardBody = document.createElement("div");
@@ -146,11 +148,14 @@ function load() {
             quoteApp.quoteDisplay.appendChild(newRow);
             return newRow;
         },
-        redisplayCards: function(quote) {
+        redisplayCards: function(quotes) {
             // After quoteApp.quoteCards is sorted
             quoteApp.cards = [];
             quoteApp.quoteDisplay.innerHTML = "";
-            quoteApp.displayQuotes();
+            // quoteApp.displayQuotes();
+            for (var i = 0; i < quotes.length; i++) {
+                quoteApp.createAndDisplayCard(quotes[i]);
+            }
         },
         quoteGenerator: function () {
             $.ajax({
@@ -282,8 +287,27 @@ function load() {
             $("#inputError").css("visibility", "visible");
         }
     });
-    document.addEventListener("click", function() {
-        console.log(quoteApp.cards[3].card);
+    function bubbleSort(array, key) {
+        console.log(array[j - 1]);
+        for(var i = 0; i < array.length; i++) {
+            for(var j = 1; j < array.length; j++) {
+                if(array[j - 1].getElementsByClassName("cardFooter")[0].children[2] < array[j].getElementsByClassName("cardFooter")[0].children[2]) {
+                    var temp = array[j - 1];
+                    array[j - 1] = array[j];
+                    array[j] = temp;
+                }
+            }  
+        }
+        return array;
+    }
+    document.getElementById('likesSortButton').addEventListener("click", function() {
+        bubbleSort(quoteApp.quoteCards, "likes");
+        quoteApp.redisplayCards(quoteApp.quoteCards);
+    }, false);
+    document.getElementById('dislikesSortButton').addEventListener('click', function() {
+        console.log(Array.prototype.slice.call(quoteApp.quoteCardElements, 0));
+        bubbleSort(quoteApp.quoteCardElements, "likes");
+        console.log(quoteApp.quoteCardElements);
     }, false);
     // Method calls
     quoteApp.quoteGenerator();
