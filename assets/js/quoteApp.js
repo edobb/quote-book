@@ -236,6 +236,7 @@ function load() {
         
     });
     $("#save-random-quote").on("click", function () {
+        $("#saveStatus1").css("visibility", "hidden");
         canSave = true;
         quoteApp.checkIfQuoteIsAlreadyQueried(quoteText);
         if (canSave){
@@ -251,11 +252,11 @@ function load() {
         }
         else{
             console.log("sorry already taken");
-
+            $("#saveStatus1").css("visibility", "visible");
         }
     });
     $("#add-quote-btn").on("click", function (event) {
-        $("#inputError").css("visibility", "hidden");
+        $("#saveStatus2").css("visibility", "hidden");
         canSave = true;
         event.preventDefault();
         var author = $("#author-input").val().trim();
@@ -264,8 +265,8 @@ function load() {
         if (canSave){
             quotesInDatabase.push(actualQuote);
             database.ref("/quotes").push({
-                quote: author,
-                author: actualQuote,
+                quote: actualQuote,
+                author: author,
                 likes: 0,
                 dislikes: 0,
                 wikiLink: 'https://www.google.com'
@@ -273,7 +274,7 @@ function load() {
         }
         else{
             console.log("sorry already taken");
-            $("#inputError").css("visibility", "visible");
+            $("#saveStatus2").css("visibility", "visible");
         }
     });
     // Method calls
