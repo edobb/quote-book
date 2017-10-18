@@ -20,6 +20,7 @@ function load() {
     var quoteText;
     var canSave = true;
     var quotesInDatabase =[];
+    var timestamp = moment();
     /**
      * Constructor for card objects
      * @param {String} key - The key to this object in the database
@@ -158,7 +159,7 @@ function load() {
                 }
             }).done(function (response) {
 
-
+            	console.log(response);
                 $('#quote').text(response.quoteText);
                 $('#author').text(response.quoteAuthor);
 
@@ -166,6 +167,7 @@ function load() {
                 quoteAuthor = response.quoteAuthor;
 
                 quoteText = response.quoteText;
+            
 
             });
         },
@@ -255,13 +257,12 @@ function load() {
         }
     });
     $("#add-quote-btn").on("click", function (event) {
-        $("#inputError").css("visibility", "hidden");
         canSave = true;
         event.preventDefault();
         var author = $("#author-input").val().trim();
         var actualQuote = $("#quote-input").val().trim();
         quoteApp.checkIfQuoteIsAlreadyQueried(actualQuote);
-        if (canSave){
+        if (canSave && ( author !== "" && actualQuote !== "")){
             quotesInDatabase.push(actualQuote);
             database.ref("/quotes").push({
                 quote: author,
@@ -270,16 +271,22 @@ function load() {
                 dislikes: 0,
                 wikiLink: 'https://en.wikipedia.org/wiki/' + quoteAuthor
             });
-        }
-        else{
+        } else if ( author === "" && actualQuote !== "" ){ //empty quote and author data validation below
+        	$("#author-input").attr('placeholder' , "Enter an author (enter 'unknown author' if author unknown");
+        } else if ( actualQuote === "" && author !== "" ){
+        	$("#quote-input").attr('placeholder' , "Enter a quote");
+        } else if ( actualQuote === "" && author === "" ){
+        	$('#author-input').attr('placeholder' , "Enter an author (enter 'Unkown Author' if author unknown)");
+        	$('#quote-input').attr('placeholder' , 'Enter a Quote');
+        } else {
             console.log("sorry already taken");
-            $("#inputError").css("visibility", "visible");
+            $("#inputError").text("Quote already exists, please try again");
         }
     });
     // Method calls
     quoteApp.quoteGenerator();
     quoteApp.pullDatabaseQuotes(function () {
-        quoteApp.displayQuotes();
+    	quoteApp.displayQuotes();
     });
     document.addEventListener("click", function() {
         // console.log(quoteApp.cards[3].card);
