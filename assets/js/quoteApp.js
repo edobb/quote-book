@@ -43,6 +43,7 @@ function load() {
             for (var i = 0; i < quoteApp.cards.length; i++) {
                 if (quoteApp.cards[i].card.contains(e.target)) {
                     quoteApp.addLike(quoteApp.cards[i].key);
+                    quoteApp.cards[i].addLikeToView();
                     break;
                 }
             }
@@ -51,10 +52,19 @@ function load() {
             for (var i = 0; i < quoteApp.cards.length; i++) {
                 if (quoteApp.cards[i].card.contains(e.target)) {
                     quoteApp.addDislike(quoteApp.cards[i].key);
+                    quoteApp.cards[i].addDislikeToView();
                     break;
                 }
             }
         })
+    }
+
+    Card.prototype.addLikeToView = function() {
+        this.card.getElementsByClassName("cardFooter")[0].children[2].innerHTML = parseInt(this.card.getElementsByClassName("cardFooter")[0].children[2].innerHTML) + 1;
+    }
+
+    Card.prototype.addDislikeToView = function() {
+        this.card.getElementsByClassName("cardFooter")[0].children[4].innerHTML = parseInt(this.card.getElementsByClassName("cardFooter")[0].children[4].innerHTML) + 1;
     }
     /**
      * The object that contains the fields and methods for the app.
@@ -73,13 +83,15 @@ function load() {
          */
         pullDatabaseQuotes: function (callback) {
             database.ref("/quotes").on("value", function (snap) {
-                quoteApp.clearView();
-                snap.forEach(function (childSnap) {
-                    quoteApp.cards.push(new Card(childSnap.key, childSnap.val()));
-                    quoteApp.quoteCards.push(childSnap.val());
-                    quotesInDatabase.push(childSnap.val().quote);
-                });
-                callback();
+                if (quoteApp.cards.length === 0) {
+                    quoteApp.clearView();
+                    snap.forEach(function (childSnap) {
+                        quoteApp.cards.push(new Card(childSnap.key, childSnap.val()));
+                        quoteApp.quoteCards.push(childSnap.val());
+                        quotesInDatabase.push(childSnap.val().quote);
+                    });
+                    callback();
+                }
             });
         },
         /**
