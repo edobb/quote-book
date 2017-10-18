@@ -4,6 +4,10 @@ html, body {
 	font-size: 16px;
 }
 
+#saveStatus1, #saveStatus2{
+	visibility: hidden;
+}
+
 #authorSearchContainer {
 	position: absolute;
 	background-color: white;
