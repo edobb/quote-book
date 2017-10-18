@@ -65,6 +65,7 @@ function load() {
         /** An array for holding the cards that are in the display. This will can be sorted and used to re display cards in the view. */
         quoteCards: [],
         cards: [],
+        authorsArray: [],
         /**
          * Pulls all the quotes from the database and pushes them to the [quoteCards] array.
          * @param {Function} callback
@@ -77,6 +78,7 @@ function load() {
                     quoteApp.cards.push(new Card(childSnap.key, childSnap.val()));
                     quoteApp.quoteCards.push(childSnap.val());
                     quotesInDatabase.push(childSnap.val().quote);
+                    authorsArray.push(childSnap.val().author);
                 });
                 callback();
             });
@@ -217,6 +219,18 @@ function load() {
                 return false;
             }
         }
+        sortByAuthors: function(authArray){
+            authArray.sort(function(a, b){
+                var c = a.toLowerCase();
+                var d = b.toLowerCase();
+                if (c < d) return 1;
+                if (d < c) return -1;
+                return 0; 
+            });
+        })
+                }
+            }
+        }
     }
 
     $('#author-input').autocomplete({
@@ -231,7 +245,7 @@ function load() {
                 success: function (data) {
                     response($.map(data, function (item) {
                         return item["word"];
-                    }))
+                    }));
                 },
             });
         }
@@ -240,8 +254,7 @@ function load() {
     //Random Quote generated from API
     $('#random-quote-button').click(function () {
         quoteApp.quoteGenerator();
-        
-        
+        $("#saveStatus1").css("visibility", "hidden");
     });
     $("#save-random-quote").on("click", function () {
         $("#saveStatus1").css("visibility", "hidden");
