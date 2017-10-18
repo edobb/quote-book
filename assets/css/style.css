@@ -6,6 +6,8 @@ html, body {
 
 #saveStatus1, #saveStatus2{
 	visibility: hidden;
+	color: brown;
+	margin-bottom: 10px;
 }
 
 #authorSearchContainer {
