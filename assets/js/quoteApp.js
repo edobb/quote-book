@@ -160,8 +160,8 @@ function load() {
 
 
                 $('#quote').text(response.quoteText);
-                $('#author').text(response.quoteAuthor);
-
+                $('#author').text("- " + response.quoteAuthor);
+                $('#featuredWikiLink').attr('href' ,'https://en.wikipedia.org/wiki/' + response.quoteAuthor);
 
                 quoteAuthor = response.quoteAuthor;
 
@@ -247,7 +247,7 @@ function load() {
                 author: quoteAuthor,
                 likes: 0,
                 dislikes: 0,
-                wikiLink: 'https://www.google.com'
+                wikiLink: 'https://en.wikipedia.org/wiki/' + quoteAuthor
             });
         }
         else{
@@ -269,7 +269,7 @@ function load() {
                 author: author,
                 likes: 0,
                 dislikes: 0,
-                wikiLink: 'https://www.google.com'
+                wikiLink: 'https://en.wikipedia.org/wiki/' + quoteAuthor
             });
         }
         else{
