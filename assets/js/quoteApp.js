@@ -89,7 +89,9 @@ function load() {
             for (var i = 0; i < quoteApp.quoteCards.length; i++) {
                 quoteApp.cards[i].addCard(quoteApp.createAndDisplayCard(quoteApp.quoteCards[i]));
             }
-            quoteApp.quoteCardElements = document.getElementsByClassName("quoteCard");
+            for (var i = 0; i < document.getElementsByClassName("quoteCard").length; i++) {
+                quoteApp.quoteCardElements.push(document.getElementsByClassName("quoteCard")[i]);
+            }
         },
         /** Creates card element and adds it to the view.
          * @param {Object} quote
@@ -288,10 +290,12 @@ function load() {
         }
     });
     function bubbleSort(array, key) {
-        console.log(array[j - 1]);
+        var myKey;
+        if (key === "likes") myKey = 2;
+        else if (key === "dislikes") myKey = 4;
         for(var i = 0; i < array.length; i++) {
             for(var j = 1; j < array.length; j++) {
-                if(array[j - 1].getElementsByClassName("cardFooter")[0].children[2] < array[j].getElementsByClassName("cardFooter")[0].children[2]) {
+                if(parseInt(array[j - 1].getElementsByClassName("cardFooter")[0].children[myKey].innerHTML) < parseInt(array[j].getElementsByClassName("cardFooter")[0].children[myKey].innerHTML)) {
                     var temp = array[j - 1];
                     array[j - 1] = array[j];
                     array[j] = temp;
@@ -300,14 +304,24 @@ function load() {
         }
         return array;
     }
+    function list() {
+        return Array.prototype.slice.call(arguments);
+      }
     document.getElementById('likesSortButton').addEventListener("click", function() {
-        bubbleSort(quoteApp.quoteCards, "likes");
-        quoteApp.redisplayCards(quoteApp.quoteCards);
+        var children = quoteApp.quoteDisplay.children;
+        var array = bubbleSort(Array.prototype.slice.call(children), "likes");
+        quoteApp.quoteDisplay.innerHTML = "";
+        for (var i = 0; i < array.length; i++) {
+            quoteApp.quoteDisplay.appendChild(array[i]);
+        }
     }, false);
     document.getElementById('dislikesSortButton').addEventListener('click', function() {
-        console.log(Array.prototype.slice.call(quoteApp.quoteCardElements, 0));
-        bubbleSort(quoteApp.quoteCardElements, "likes");
-        console.log(quoteApp.quoteCardElements);
+        var children = quoteApp.quoteDisplay.children;
+        var array = bubbleSort(Array.prototype.slice.call(children), "dislikes");
+        quoteApp.quoteDisplay.innerHTML = "";
+        for (var i = 0; i < array.length; i++) {
+            quoteApp.quoteDisplay.appendChild(array[i]);
+        }
     }, false);
     // Method calls
     quoteApp.quoteGenerator();
