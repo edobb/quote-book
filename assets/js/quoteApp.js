@@ -96,13 +96,13 @@ function load() {
          * @param {number} quote.likes
          * @param {number} quote.dislikes
          * @param {string} quote.wikiLink
-         * @return {HTMLDivElement}
          * Data about the quote for creating a card to be displayed to the view.
          * - The actual text content of the quote.
          * - The author of the quote.
          * - The number of likes for the quote.
          * - The number of dislikes for the quote.
          * - The link to the wikipedia page for this quote.
+         * @return {HTMLDivElement}
          */
         createAndDisplayCard: function (quote) {
             var newRow = document.createElement("div");
@@ -145,6 +145,12 @@ function load() {
             newRow.appendChild(newCard);
             quoteApp.quoteDisplay.appendChild(newRow);
             return newRow;
+        },
+        redisplayCards: function(quote) {
+            // After quoteApp.quoteCards is sorted
+            quoteApp.cards = [];
+            quoteApp.quoteDisplay.innerHTML = "";
+            quoteApp.displayQuotes();
         },
         quoteGenerator: function () {
             $.ajax({
@@ -276,12 +282,12 @@ function load() {
             $("#inputError").css("visibility", "visible");
         }
     });
+    document.addEventListener("click", function() {
+        console.log(quoteApp.cards[3].card);
+    }, false);
     // Method calls
     quoteApp.quoteGenerator();
     quoteApp.pullDatabaseQuotes(function () {
         quoteApp.displayQuotes();
     });
-    document.addEventListener("click", function() {
-        // console.log(quoteApp.cards[3].card);
-    }, false);
 }
