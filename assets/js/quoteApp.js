@@ -208,8 +208,16 @@ function load() {
                         canSave = false;
                     }
                 }
+        },
+        emptyAuthors: function(auth){
+            if (auth.length === 0){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
-    };
+    }
 
     $('#author-input').autocomplete({
         minLength: 3,
@@ -240,6 +248,9 @@ function load() {
         canSave = true;
         quoteApp.checkIfQuoteIsAlreadyQueried(quoteText);
         if (canSave){
+            if (quoteApp.emptyAuthors(author)){
+                quoteAuthor = "Unknown Author";
+            };
             quotesInDatabase.push(quoteText);
             console.log("can save");
             database.ref("/quotes").push({
@@ -263,6 +274,9 @@ function load() {
         var actualQuote = $("#quote-input").val().trim();
         quoteApp.checkIfQuoteIsAlreadyQueried(actualQuote);
         if (canSave){
+            if (quoteApp.emptyAuthors(author)){
+                author = "Unknown Author";
+            };
             quotesInDatabase.push(actualQuote);
             database.ref("/quotes").push({
                 quote: actualQuote,
