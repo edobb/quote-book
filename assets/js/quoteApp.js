@@ -248,7 +248,7 @@ function load() {
         canSave = true;
         quoteApp.checkIfQuoteIsAlreadyQueried(quoteText);
         if (canSave){
-            if (quoteApp.emptyAuthors(author)){
+            if (quoteApp.emptyAuthors(quoteAuthor)){
                 quoteAuthor = "Unknown Author";
             };
             quotesInDatabase.push(quoteText);
