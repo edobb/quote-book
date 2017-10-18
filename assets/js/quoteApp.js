@@ -159,7 +159,7 @@ function load() {
                 }
             }).done(function (response) {
 
-            	console.log(response);
+
                 $('#quote').text(response.quoteText);
                 $('#author').text(response.quoteAuthor);
 
@@ -167,7 +167,6 @@ function load() {
                 quoteAuthor = response.quoteAuthor;
 
                 quoteText = response.quoteText;
-            
 
             });
         },
@@ -269,7 +268,8 @@ function load() {
                 author: actualQuote,
                 likes: 0,
                 dislikes: 0,
-                wikiLink: 'https://en.wikipedia.org/wiki/' + quoteAuthor
+                wikiLink: 'https://en.wikipedia.org/wiki/' + quoteAuthor,
+
             });
         } else if ( author === "" && actualQuote !== "" ){ //empty quote and author data validation below
         	$("#author-input").attr('placeholder' , "Enter an author (enter 'unknown author' if author unknown");

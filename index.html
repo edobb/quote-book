@@ -18,33 +18,30 @@
     </head>
     <body>
         <div class="container">
+          <div class="btn btn-warning" id="login">Log In</div>  
           <header>
             <img src="assets/images/logo2_1.svg" class="logo">
           </header>
             <div class="row justify-content-center">
                 <div class="card col-sm-8 cardWrapper" id="featured">
                     <div class="card-body">
-                        <h4 class="card-title">Special title treatment</h4>
-                        <p class="card-text">
+                        <h4 class="card-title" id="quote">Special title treatment</h4>
+                        <p class="card-text" id="author">
                             With supporting text below as a natural lead-in to additional content.
                         </p>
                     </div>
                     <div class="card-header cardFooter">
-                        <a class="wikiLink" href="#">Wikipedia</a>
-                        <img class="thumbsImg" src="assets/images/icons/thumbsUp.png">
-                        <span>45</span>
-                        <img class="thumbsImg" src="assets/images/icons/thumbsDown.png">
-                        <span>15</span>
+                        <a class="wikiLink" id="featuredWikiLink" href="#">Wikipedia</a>
                     </div>
                 </div>
             </div>
             <div class="row justify-content-center">
                 <div id="random-quote-wrapper">
-                    <p id="author"></p>
-                    <p id="quote"></p>
                     <p class="directions">Click below For A Random Quote.</p>
                     <button id="random-quote-button">Get Random Quote!</button>
                     <button id="save-random-quote">Save Quote</button>
+                    <div id="saveStatus1">Quote already saved</div>
+                    <div id="loggedin">Must Log In to Save a Quote</div>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -58,9 +55,25 @@
                         <label for="quote-input">Quote</label>
                         <input class="form-control" id="quote-input" type="text">
                     </div>
+
                     <div id="inputError"></div>
+
                     <input class="btn btn-primary" id="add-quote-btn" type="submit">
                 </form>
+            </div>
+            <div class="row justify-content-center buttonSortDiv">
+                <button type="button" id="likesSortButton" class="btn btn-link">
+                    Likes
+                </button>
+                <button type="button" id="dislikesSortButton" class="btn btn-link">
+                    Dislikes
+                </button>
+                <button type="button" id="authorSortButton" class="btn btn-link">
+                    Author
+                </button>
+                <button type="button" id="dateSortButton" class="btn btn-link">
+                    Date Added
+                </button>
             </div>
             <div id="quote-display">
                 <div class="row justify-content-center">
