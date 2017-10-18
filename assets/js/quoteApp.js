@@ -160,8 +160,8 @@ function load() {
 
 
                 $('#quote').text(response.quoteText);
-                $('#author').text(response.quoteAuthor);
-
+                $('#author').text("- " + response.quoteAuthor);
+                $('#featuredWikiLink').attr('href' ,'https://en.wikipedia.org/wiki/' + response.quoteAuthor);
 
                 quoteAuthor = response.quoteAuthor;
 
