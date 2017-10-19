@@ -20,6 +20,7 @@ function load() {
     var quoteText;
     var canSave = true;
     var quotesInDatabase =[];
+    var authorsArray = [];
     /**
      * Constructor for card objects
      * @param {String} key - The key to this object in the database
@@ -89,6 +90,7 @@ function load() {
                         quoteApp.cards.push(new Card(childSnap.key, childSnap.val()));
                         quoteApp.quoteCards.push(childSnap.val());
                         quotesInDatabase.push(childSnap.val().quote);
+                        authorsArray.push(childSnap.val().author);
                     });
                     callback();
                 }
@@ -316,6 +318,19 @@ function load() {
         }
         return array;
     }
+    function sortByAuthors(array, key){
+        var myKey = 1;
+        for(var i = 0; i < array.length; i++) {
+            for(var j = 1; j < array.length; j++) {
+                if(array[j - 1].getElementsByClassName("card-body")[0].children[myKey].innerHTML.toLowerCase() > array[j].getElementsByClassName("card-body")[0].children[myKey].innerHTML.toLowerCase()) {
+                    var temp = array[j - 1];
+                    array[j - 1] = array[j];
+                    array[j] = temp;
+                }
+            }  
+        }
+        return array;
+    };
     function list() {
         return Array.prototype.slice.call(arguments);
       }
@@ -332,6 +347,15 @@ function load() {
         var array = bubbleSort(Array.prototype.slice.call(children), "dislikes");
         quoteApp.quoteDisplay.innerHTML = "";
         for (var i = 0; i < array.length; i++) {
+            quoteApp.quoteDisplay.appendChild(array[i]);
+        }
+    }, false);
+    document.getElementById("authorSortButton").addEventListener("click", function(){
+        var children = quoteApp.quoteDisplay.children;
+        console.log(children);
+        var array =  sortByAuthors(Array.prototype.slice.call(children), "author");
+        quoteApp.quoteDisplay.innerHTML = "";
+        for (var i = 0; i < array.length; i++){
             quoteApp.quoteDisplay.appendChild(array[i]);
         }
     }, false);
