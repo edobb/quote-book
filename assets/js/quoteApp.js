@@ -273,7 +273,8 @@ function load() {
                 author: quoteAuthor,
                 likes: 0,
                 dislikes: 0,
-                wikiLink: 'https://en.wikipedia.org/wiki/' + quoteAuthor
+                wikiLink: 'https://en.wikipedia.org/wiki/' + quoteAuthor,
+                dateAdded: firebase.database.ServerValue.TIMESTAMP
             });
         }
         else{
@@ -295,7 +296,8 @@ function load() {
                 author: actualQuote,
                 likes: 0,
                 dislikes: 0,
-                wikiLink: 'https://en.wikipedia.org/wiki/' + quoteAuthor
+                wikiLink: 'https://en.wikipedia.org/wiki/' + quoteAuthor,
+                dateAdded: firebase.database.ServerValue.TIMESTAMP
             });
         }
         else{
@@ -331,6 +333,19 @@ function load() {
         }
         return array;
     };
+    function sortByDate(){
+        var arr = [];
+        for (var i = 0; i < quotesInDatabase.length; i++){
+            database.ref('/quotes').orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot){
+                var snap = snapshot.val();
+                console.log(snap);
+                arr.push(snap);
+            }, function(errorObject){
+                console.log("Errors handled: " + errorObject.code);
+            });
+        }
+        return arr;
+    };
     function list() {
         return Array.prototype.slice.call(arguments);
       }
@@ -352,13 +367,16 @@ function load() {
     }, false);
     document.getElementById("authorSortButton").addEventListener("click", function(){
         var children = quoteApp.quoteDisplay.children;
-        console.log(children);
         var array =  sortByAuthors(Array.prototype.slice.call(children), "author");
         quoteApp.quoteDisplay.innerHTML = "";
         for (var i = 0; i < array.length; i++){
             quoteApp.quoteDisplay.appendChild(array[i]);
         }
     }, false);
+    document.getElementById("dateSortButton").addEventListener("click", function(){
+        $("#quote-display").empty();
+        quoteApp.displayQuotes();
+    });
     // Method calls
     quoteApp.quoteGenerator();
     quoteApp.pullDatabaseQuotes(function () {
