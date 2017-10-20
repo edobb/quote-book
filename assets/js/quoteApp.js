@@ -302,8 +302,8 @@ function load() {
             }
             quotesInDatabase.push(actualQuote);
             database.ref("/quotes").push({
-                quote: author,
-                author: actualQuote,
+                quote: actualQuote,
+                author: author,
                 likes: 0,
                 dislikes: 0,
                 wikiLink: 'https://en.wikipedia.org/wiki/' + quoteAuthor,
