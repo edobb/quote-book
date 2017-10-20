@@ -238,6 +238,9 @@ function load() {
             if (auth.length === 0){
                 return true;
             }
+            else{
+                return false;
+            }
         }
     };
 
