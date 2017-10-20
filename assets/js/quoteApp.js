@@ -233,6 +233,14 @@ function load() {
                         canSave = false;
                     }
                 }
+        },
+        authorIsUnknown: function(auth){
+            if (auth.length === 0){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
     };
 
@@ -266,13 +274,15 @@ function load() {
         if (canSave){
             quotesInDatabase.push(quoteText);
             console.log("can save");
+            if (quoteApp.authorIsUnknown(quoteAuthor)){
+                quoteAuthor = "Unknown Author";
+            }
             database.ref("/quotes").push({
                 quote: quoteText,
                 author: quoteAuthor,
                 likes: 0,
                 dislikes: 0,
-                wikiLink: 'https://en.wikipedia.org/wiki/' + quoteAuthor,
-                dateAdded: firebase.database.ServerValue.TIMESTAMP
+                wikiLink: 'https://en.wikipedia.org/wiki/' + quoteAuthor
             });
         }
         else{
@@ -287,6 +297,9 @@ function load() {
         var actualQuote = $("#quote-input").val().trim();
         quoteApp.checkIfQuoteIsAlreadyQueried(actualQuote);
         if (canSave && ( author !== "" && actualQuote !== "")){
+            if (quoteApp.authorIsUnknown(author)){
+                author = "Unknown Author";
+            }
             quotesInDatabase.push(actualQuote);
             database.ref("/quotes").push({
                 quote: author,
