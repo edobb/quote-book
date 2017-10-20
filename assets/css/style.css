@@ -4,6 +4,9 @@ html, body {
 	font-size: 16px;
 }
 
+a:link, a:hover {
+	color:red;
+}
 
 header {
 	text-align: center;
@@ -57,8 +60,31 @@ header {
 	margin: 0px 8px 0px 8px;
 }
 
+.thumbsImg:hover{
+	opacity:.5;
+	position:relative;
+	bottom:2px;
+}
+
 .wikiLink {
 	float: left;
+}
+.sortButton{
+	float:right;
+	margin:10px;
+}
+.directions{
+	font-size:10px;
+	text-align:center;
+}
+
+#randomQuoteError{
+	height:12px;
+	font-style:italic;
+	color:red;
+	font-size:12px;
+	margin-bottom:10px;
+	text-align:center;
 }
 
 footer {
@@ -75,5 +101,8 @@ footer p {
 
 
 input[type="text"]::-webkit-input-placeholder {
-  color: red;
+	color: red;
+	font-style: italic;
+	opacity: .7;
+	
 }

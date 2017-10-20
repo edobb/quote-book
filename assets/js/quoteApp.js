@@ -124,7 +124,7 @@ function load() {
             var newRow = document.createElement("div");
             newRow.className = "row justify-content-center quoteCard";
             var newCard = document.createElement("div");
-            newCard.className = "card col-sm-7 cardWrapper";
+            newCard.className = "card col-sm-8 cardWrapper";
             var cardBody = document.createElement("div");
             cardBody.className = "card-body";
             var quoteText = document.createElement("h4");
@@ -265,7 +265,7 @@ function load() {
     //Random Quote generated from API
     $('#random-quote-button').click(function () {
         quoteApp.quoteGenerator();
-        
+        $('#randomQuoteError').text('');
         
     });
 $("#save-random-quote").on("click", function () {
@@ -285,9 +285,10 @@ $("#save-random-quote").on("click", function () {
                 dislikes: 0,
                 wikiLink: 'https://en.wikipedia.org/wiki/' + quoteAuthor
             });
+            $("#randomQuoteError").text("Your Quote Has Been Added!")
         }
         else{
-            $("#randomQuoteError").text("Quote already exists, please try a new quote");
+            $("#randomQuoteError").text("Quote Already Exists, Please Try a New Quote!");
 
        }
     });
