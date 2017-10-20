@@ -89,7 +89,6 @@ function load() {
                         quoteApp.cards.push(new Card(childSnap.key, childSnap.val()));
                         quoteApp.quoteCards.push(childSnap.val());
                         quotesInDatabase.push(childSnap.val().quote);
-                        authorsArray.push(childSnap.val().author);
                     });
                     callback();
                 }
