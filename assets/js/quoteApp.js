@@ -268,7 +268,8 @@ function load() {
         
         
     });
-    $("#save-random-quote").on("click", function () {
+$("#save-random-quote").on("click", function () {
+        $("#randomQuoteError").text("");
         canSave = true;
         quoteApp.checkIfQuoteIsAlreadyQueried(quoteText);
         if (canSave){
@@ -286,11 +287,12 @@ function load() {
             });
         }
         else{
-            console.log("sorry already taken");
+            $("#randomQuoteError").text("Quote already exists, please try a new quote");
 
-        }
+       }
     });
     $("#add-quote-btn").on("click", function (event) {
+        $("#inputError").text("");
         canSave = true;
         event.preventDefault();
         var author = $("#author-input").val().trim();
@@ -302,20 +304,20 @@ function load() {
             }
             quotesInDatabase.push(actualQuote);
             database.ref("/quotes").push({
-                quote: actualQuote,
-                author: author,
+                quote: author,
+                author: actualQuote,
                 likes: 0,
                 dislikes: 0,
                 wikiLink: 'https://en.wikipedia.org/wiki/' + quoteAuthor,
                 dateAdded: firebase.database.ServerValue.TIMESTAMP
             });
         } else if ( author === "" && actualQuote !== "" ){ //empty quote and author data validation below
-        	$("#author-input").attr('placeholder' , "Enter an author (enter 'unknown author' if author unknown");
+            $("#author-input").attr('placeholder' , "Enter an author (enter 'unknown author' if author unknown");
         } else if ( actualQuote === "" && author !== "" ){
-        	$("#quote-input").attr('placeholder' , "Enter a quote");
+            $("#quote-input").attr('placeholder' , "Enter a quote");
         } else if ( actualQuote === "" && author === "" ){
-        	$('#author-input').attr('placeholder' , "Enter an author (enter 'Unkown Author' if author unknown)");
-        	$('#quote-input').attr('placeholder' , 'Enter a Quote');
+            $('#author-input').attr('placeholder' , "Enter an author (enter 'Unkown Author' if author unknown)");
+            $('#quote-input').attr('placeholder' , 'Enter a Quote');
         } else {
             console.log("sorry already taken");
             $("#inputError").text("Quote already exists, please try again");
