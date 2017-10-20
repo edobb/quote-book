@@ -6,15 +6,19 @@
         <meta name="description" content="An interactive users submited database of all our favorite quotes for web browsers.">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="assets/images/favicon17x17.png" type="image/png" sizes="16x16">
+        <link rel="icon" href="assets/images/favicon32x32.png" type="image/png" sizes="32x32">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
         <script src="https://www.gstatic.com/firebasejs/4.5.1/firebase.js"></script>
+        <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
         <link rel="stylesheet" href="assets/css/style.css">
     </head>
     <body>
         <div class="container">
+          <div class="btn btn-warning" id="login">Log In</div>  
           <header>
             <img src="assets/images/logo2_1.svg" class="logo">
           </header>
@@ -42,14 +46,16 @@
                 <form class="col-sm-8">
                     <div class="form-group">
                         <label for="author-input">Author Name</label>
-                        <input class="form-control" id="author-input" type="text">
+                        <input class="form-control" class="red-text" id="author-input" type="text">
                         <div id="authorSearchContainer"></div>
                     </div>
                     <div class="form-group">
                         <label for="quote-input">Quote</label>
                         <input class="form-control" id="quote-input" type="text">
                     </div>
-                    <div id="inputError" style="visibility: hidden;">Quote already exists, please try again</div>
+
+                    <div id="inputError"></div>
+
                     <input class="btn btn-primary" id="add-quote-btn" type="submit">
                 </form>
             </div>
